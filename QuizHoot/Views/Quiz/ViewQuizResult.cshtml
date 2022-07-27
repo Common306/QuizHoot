@@ -1,0 +1,110 @@
+﻿@model List<TakeQuiz>
+@{
+    ViewData["Title"] = "Quiz History";
+    ViewData["SubTitle"] = "Manage Quiz";
+    ViewData["QuizHistory"] = "active";
+
+    Layout = "_CustomQuiz";
+}
+
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+  
+            <div class="card-body px-0 pt-0 pb-2">
+
+                <div class="table-responsive p-0">
+                    <table class="table align-items-center mb-0" >
+                        <thead>
+                            <tr>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Quiz</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Start</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Finish</th>
+                                <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Review</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var takeQuiz in Model)
+                            {
+                            <tr>
+                                <td class="align-middle text-sm">
+                                    <p class="text-xs font-weight-bold mb-0 ps-3">@takeQuiz.Quiz.Title</p>
+                                </td>
+                                <td>
+                                    <p class="text-xs font-weight-bold mb-0">@takeQuiz.StartAt</p>
+                                </td>
+                                @if (takeQuiz.FinishAt is null)
+                                {
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0 text-danger">Not Submit</p>
+                                    </td>
+                                    <td>
+                                        <a class="badge badge-sm bg-gradient-faded-success" asp-controller="Quiz" asp-action="DoQuizInProcess" asp-route-takeQuizId="@takeQuiz.TakeQuizId">Resume!</a>
+                                    </td> 
+                                }
+                                else
+                                {
+                                    <td>
+                                        <p class="text-xs font-weight-bold mb-0">@takeQuiz.FinishAt</p>
+                                    </td>
+                                    <td>
+                                        <a class="badge badge-sm bg-gradient-faded-primary" asp-controller="Quiz" asp-action="Review" asp-route-id="@takeQuiz.TakeQuizId">Review</a>
+                                    </td>
+                                }
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@*<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Quiz</th>
+                        <th>Start</th>
+                        <th>Finish</th>
+                        <th>Review</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var takeQuiz in Model)
+                    {
+                        <tr>
+                            <td>@takeQuiz.Quiz.Title</td>
+                            <td>@takeQuiz.StartAt</td>
+                            @if (takeQuiz.FinishAt is null)
+                            {
+                                <td>
+                                    <span class="text-danger">Not Submit</span>
+                                    <span> | </span>
+                                    <a class="badge badge-sm bg-gradient-faded-success" asp-controller="Quiz" asp-action="DoQuizInProcess" asp-route-takeQuizId="@takeQuiz.TakeQuizId">Resume!</a>
+                                </td>
+                                <td>
+                                    @Html.Raw(" ")
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <span>@takeQuiz.FinishAt</span>
+                                </td>
+                                <td>
+                                    <a class="badge badge-sm bg-gradient-faded-primary" asp-controller="Quiz" asp-action="Review" asp-route-id="@takeQuiz.TakeQuizId">Review</a>
+                                </td>
+                            }
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>*@

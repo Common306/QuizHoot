@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "_CustomQuiz";
+}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header pb-0">
+                <h2>Python for everyone</h2>
+                <button class="btn btn-icon btn-3 btn-primary" type="button" data-bs-toggle="modal"
+                        data-bs-target="#addQuestion">
+                    <span class="btn-inner--icon"><i class="ni ni-fat-add "></i></span>
+                    <span class="btn-inner--text">Create question</span>
+                </button>
+            </div>
+
+            <form class="p-4">
+                <div class="form-group">
+                    <h6 class="form-control-label">
+                        1. Python for everyone <i class="fa-solid fa-pen text-info icon-edit"></i> | <i class="fa-solid fa-trash text-danger" onclick="deleteQuestionById(1, this)"></i>
+                    </h6>
+                    <div style="padding-left: 15px">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" checked disabled>
+                            <label class="custom-control-label" for="customCheck1">Check this custom checkbox</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" disabled>
+                            <label class="custom-control-label" for="customCheck1">Check this custom checkbox</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" disabled>
+                            <label class="custom-control-label" for="customCheck1">Check this custom checkbox</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="fcustomCheck1" disabled>
+                            <label class="custom-control-label" for="customCheck1">Check this custom checkbox</label>
+                        </div>
+                    </div>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+

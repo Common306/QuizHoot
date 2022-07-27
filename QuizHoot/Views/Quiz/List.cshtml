@@ -1,0 +1,52 @@
+﻿@model List<QuizViewModel>
+@{
+    Layout = "_CustomQuiz";
+    ViewData["SubTitle"] = "Explore Quiz";
+    ViewData["Quizz"] = "active";
+}
+
+@section searchbox {
+    <form id="searchQuizCodeForm" asp-controller="Quiz" asp-action="List" method="get">
+        <div class="input-group">
+            <span style="z-index: 1;" class="input-group-text text-body">
+                <i class="fas fa-search" aria-hidden="true"></i>
+            </span>
+            <input id="inputSearchCodeQuiz" name="id" type="text" class="form-control" placeholder="Type Code Quiz" required>
+        </div>
+    </form>
+}
+
+<div class="row">
+    @foreach (var quiz in Model)
+    {
+        <div class="card p-2 mb-3">
+            <div class="d-flex align-items-center">
+                <img height="80" width="80" src="/images/quizlet.png" class="rounded" />
+                <div class="ms-2">
+                    <p class="m-0">Quiz Code: <span>@quiz.Quiz.QuizId</span></p>
+                    <p class="m-0 fw-bold">
+                        @quiz.Quiz.Title
+                        <a class="badge badge-sm bg-gradient-faded-info" asp-action="DoQuiz" asp-controller="Quiz" asp-route-qid="@quiz.Quiz.QuizId">Do Quiz</a>
+                    </p>
+                    <div>
+                        <i class="bi bi-justify"></i>
+                        <span class="mx-2">@quiz.TotalQuestion Questions</span>
+                        <i class="bi bi-play"></i>
+                        <span class="mx-2">@quiz.PlayQuizNumber Plays</span>
+                        <i class="bi bi-clock"></i>
+                        <span class="mx-2">Start: @quiz.Quiz.StartAt </span>
+                        <span class="mx-2">End: @quiz.Quiz.EndAt</span>
+                    </div>
+                    <div>
+                        <i class="bi bi-person-circle"></i>
+                        <span>
+                            @quiz.Quiz.Creator?.UserName
+                        </span>
+                        <i class="bi bi-dot"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</div>

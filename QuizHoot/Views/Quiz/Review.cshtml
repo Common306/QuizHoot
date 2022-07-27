@@ -1,0 +1,77 @@
+﻿@model ReviewQuizViewModel
+@{
+    ViewData["Title"] = "Review Quiz";
+
+    ViewData["SubTitle"] = "Review Quiz";
+    ViewData["ManageQuiz"] = "active";
+
+    Layout = "_CustomQuiz";
+}
+<div class="row">
+    <div class="col-12">
+        <div class="card p-4">
+            <div class="border-bottom">
+                <h4>@Model.Quiz.Title</h4>
+                <p><strong>Start:</strong> @Model.TakeQuiz.StartAt</p>
+                <p><strong>Finish:</strong> @Model.TakeQuiz.FinishAt</p>
+                <p>
+                    <strong>Score: </strong>
+                    <span>@Model.TotalScore.ToString("0.00") / @Model.Quiz.PassScore</span>
+                    @if (Model.TotalScore >= Model.Quiz.PassScore)
+                    {
+                        <span class="badge bg-gradient-success">Pass</span>
+                    }
+                    else
+                    {
+                        <span class="badge bg-gradient-danger">Not Pass</span>
+                    }
+                </p>
+            </div>
+            <div>
+                <ul style="list-style-type: none">
+                    @{
+                        int counter = 1;
+                    }
+                    @foreach (var question in Model.Questions)
+                    {
+                        <li>
+                            <p class="fw-bold">
+                                Question @(counter++). @question.Content
+                                <span class="badge bg-gradient-secondary">@Model.QuestionScore[question.QuestionId].ToString("0.00") / @question.Score</span>
+                            </p>
+                            <div>
+                                @foreach (var answer in question.Answers)
+                                {
+                                    <div class="form-check">
+                                        @if (Model.ReviewAnswer[answer])
+                                        {
+                                            <input class="form-check-input" type="checkbox" checked disabled>
+                                        }
+                                        else
+                                        {
+                                            <input class="form-check-input" type="checkbox" disabled>
+                                        }
+                                        <span>@answer.Content</span>
+                                        <br />
+                                        @if (Model.ReviewAnswer[answer])
+                                        {
+                                            @if (answer.Correct)
+                                            {
+                                                <span class="text-success fw-bold">@answer.Correct</span>
+                                            }
+                                            else
+                                            {
+                                                <span class="text-danger fw-bold">@answer.Correct</span>
+                                            }
+                                        }
+                                    </div>
+                                }
+                            </div>
+                        </li>
+                    }
+
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

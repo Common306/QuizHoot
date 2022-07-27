@@ -1,0 +1,55 @@
+﻿@model Quiz
+@{
+    ViewData["Title"] = "Detail";
+
+    ViewData["SubTitle"] = "Manage Quiz";
+    ViewData["ManageQuiz"] = "active";
+
+    Layout = "_CustomQuiz";
+}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            
+            <form class="p-4">
+                <a class="form-control-label text-primary" href="../../Quiz/Manage"><i class="ni ni-bold-left"></i> Back</a>
+                <div class="form-group">
+                    <label class="form-control-label">ID</label>
+                    <input class="form-control" type="text" value="@Model.QuizId" id="id-quiz" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label">Title</label>
+                    <input class="form-control" type="text" value="@Model.Title" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label">Content</label>
+                    <textarea rows="5" class="form-control" type="text" disabled>@Model.Content</textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label">Publish</label>
+                    <br>
+                    @if (Model.Publish)
+                    {
+                        <span class="badge badge-sm bg-gradient-success">Publish</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-sm bg-gradient-danger">No Publish</span>
+                    }
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label">Start Time</label>
+                    <input class="form-control" type="datetime" value="@Model.StartAt" id="example-datetime-local-input" disabled>
+                </div>
+                <div class="form-group">
+                    <label class="form-control-label">End Time</label>
+                    <input class="form-control" type="datetime" value="@Model.EndAt" id="example-datetime-local-input" disabled>
+                </div>
+                <div class="form-group mt-5" style="width: 30%; display:flex; justify-content: space-between">
+                    <a asp-action="AllResults" asp-controller="Quiz" asp-route-id="@Model.QuizId" type="button" class="btn btn-info">View result</a>
+                    <a asp-action="Edit" asp-controller="Quiz" asp-route-id="@Model.QuizId" type="button" class="btn btn-primary">Edit Question</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

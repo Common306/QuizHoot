@@ -1,0 +1,201 @@
+﻿@model Quiz
+@{
+
+    ViewData["Title"] = "Edit Quiz";
+
+    ViewData["SubTitle"] = "Manage Quiz";
+    ViewData["ManageQuiz"] = "active";
+
+    Layout = "_CustomQuiz";
+}
+<!-- Add Modal -->
+<div class="modal fade" id="addQuestion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Create new question</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form id="form-add-question">
+                    <input type="hidden" id="quizId" value="@ViewBag.quiz.QuizId">
+                    <div class="mb-3">
+                        <label for="questionContent" class="form-control-label">
+                            Content <span class="text-danger">*</span>
+                        </label>
+                        <textarea id="questionContent" class="form-control" type="text" name="questionContent" row="2"
+                                  required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="questionLevel" class="form-control-label">
+                            Level <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-control" id="questionLevel" name="questionLevel">
+                            @foreach (Level level in ViewBag.listLevel)
+                            {
+                <option value="@level.LevelId">@level.LevelName</option>}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="questionScore" class="form-control-label">
+                            Score <span class="text-danger">*</span>
+                        </label>
+                        <input class="form-control" type="number" id="questionScore" name="questionScore" min="1" value="1">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-control-label">
+                            Answer <span class="text-danger">*</span>
+                        </label>
+                        <div id="add-answers" class="mb-4">
+                            <div class="form-check">
+                                <div style="display: flex; justify-content: space-between" class="mb-2">
+                                    <input class="form-check-input add-check-mark" type="checkbox" checked="" name="answersMark" value="true">
+                                    <input class="form-control form-control-sm add-answer-text" type="text" name="answers" required
+                                           style="width: 90%">
+                                    <i style="margin: auto 0;" onclick="deleteAnswer(this)"
+                                       class="text-danger fa-solid fa-circle-minus"></i>
+                                </div>
+                            </div>
+                        </div>
+                        <input onclick="addNewAnswerForAdd()" type="button" value="Add answer" class="btn btn-primary">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="submitFormAddQuestion()">Create</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Edit Modal -->
+<div class="modal fade" id="editQuestion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Edit question</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <div class="modal-body">
+                <form>
+                    <input type="hidden" id="editQuestionId">
+                    <div class="mb-3">
+                        <label for="editQuestionContent" class="form-control-label">
+                            Content <span class="text-danger">*</span>
+                        </label>
+                        <textarea id="editQuestionContent" class="form-control" type="text" name="editQuestionContent" row="2"
+                                  required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editQuestionLevel" class="form-control-label">
+                            Level <span class="text-danger">*</span>
+                        </label>
+                        <select class="form-control" id="editQuestionLevel" name="editQuestionLevel">
+                            @foreach (Level level in ViewBag.listLevel)
+                            {
+                <option value="@level.LevelId">@level.LevelName</option>}
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label for="editQuestionScore" class="form-control-label">
+                            Score <span class="text-danger">*</span>
+                        </label>
+                        <input class="form-control" type="number" id="editQuestionScore" name="editQuestionScore" min="1">
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-control-label">
+                            Answer <span class="text-danger">*</span>
+                        </label>
+                        <div id="edit-answers" class="mb-4">
+
+                        </div>
+                        <input onclick="addNewAnswerForEdit()" type="button" value="Add answer" class="btn btn-primary">
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary" onclick="submitFormEditQuestion()">Save</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid py-4">
+    <div class="row">
+        <div class="col-12">
+            <div class="card mb-4">
+                <div class="card-header pb-0">
+                    <a class="form-control-label text-primary" href="../../Quiz/Manage"><i class="ni ni-bold-left"></i> Back</a>
+                    <h2>@ViewBag.Quiz.Title</h2>
+                    <button class="btn btn-icon btn-3 btn-primary" type="button" data-bs-toggle="modal"
+                            data-bs-target="#addQuestion">
+                        <span class="btn-inner--icon"><i class="ni ni-fat-add "></i></span>
+                        <span class="btn-inner--text">Create question</span>
+                    </button>
+                </div>
+
+                <form class="p-4">
+                    @{int i = 1;}
+                    @foreach (Question question in ViewBag.listQuestion)
+                    {
+
+                        List<Answer> list = question.Answers.ToList();
+                        string answersId = "";
+                        string marks = "";
+                        string answers = "";
+                        for (int ind = 0; ind < list.Count; ind++)
+                        {
+                            if (ind <= list.Count - 2)
+                            {
+                                answersId += list[ind].AnswerId + "|||";
+                                answers += list[ind].Content + "|||";
+                                if (list[ind].Correct == true) marks += "true|||";
+                                else marks += "false|||";
+                            }
+                            else
+                            {
+                                answersId += list[ind].AnswerId + "|||";
+                                answers += list[ind].Content;
+                                if (list[ind].Correct == true) marks += "true";
+                                else marks += "false";
+                            }
+
+                        }
+
+        <div class="form-group">
+            <h6 class="form-control-label">
+                @i. @question.Content
+                <i class="fa-solid fa-pen text-info icon-edit"
+                   data-question-id="@question.QuestionId"
+                   data-question-content="@question.Content"
+                   data-question-level="@question.LevelId"
+                   data-question-score="@question.Score"
+                   data-question-answersId="@answersId"
+                   data-question-marks="@marks"
+                   data-question-answers="@answers"></i>
+                |
+                <i class="fa-solid fa-trash text-danger" onclick="deleteQuestionById(@question.QuestionId, this)"></i>
+            </h6>
+            @{ i++;}
+            <div style="padding-left: 15px">
+                @foreach (Answer ans in question.Answers)
+                {
+<div class="form-check">
+    <input class="form-check-input" type="checkbox" value="" @(ans.Correct ? "checked" : "") disabled>
+    <label class="custom-control-label">@ans.Content</label>
+</div>}
+            </div>
+        </div>}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts {
+    <script src="~/assets/js/question.js"></script>
+}
